@@ -40,6 +40,8 @@ class Chess:
             self.__gameboard[7][i] = "W"+order[i]
             self.__gameboard[1][i] = "BP"
             self.__gameboard[0][i] = "B"+order[i]
+
+        self.__gameboard[3][3] = "WR"
     
     def draw(self):
         print()
@@ -65,8 +67,24 @@ class Chess:
             return False
         if piece==None: return False
 
+        if piece[1]==ROOK:
+            if startpos[0] != endpos[0] and startpos[1] != endpos[1]:
+                return False
 
-        if piece==ROOK:
-            pass
+            dx = 0 if startpos[0] == endpos[0] else (1 if endpos[0] > startpos[0] else -1)
+            dy = 0 if startpos[1] == endpos[1] else (1 if endpos[1] > startpos[1] else -1)
+
+            x, y = startpos[0] + dx, startpos[1] + dy
+            while (x, y) != endpos:
+                if self.__gameboard[y][x] is not None:
+                    return False
+                x += dx
+                y += dy
+
+            target = self.__gameboard[endpos[1]][endpos[0]]
+            if target is not None and target[0] == piece[0]:
+                return False
+            self.__gameboard[endpos[1]][endpos[0]] = piece
+            self.__gameboard[startpos[1]][startpos[0]] = None
 
         return True

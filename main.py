@@ -9,3 +9,4 @@ while not game.isCheckmate():
     while(not game.move(move)):
         print("Incorrect move")
         move = input("Next move : ")
+    
