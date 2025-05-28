@@ -1,47 +1,37 @@
-from tkinter import *
-from PIL import ImageTk, Image
-import os
 
-PIECES_IMG = {}
-assets_dir = os.path.join(os.path.dirname(__file__), "assets")
-for filename in os.listdir(assets_dir):
-    if filename.lower().endswith((".png")):
-        piece_name = os.path.splitext(filename)[0]
-        PIECES_IMG[piece_name] = "./assets/"+filename
-
+PIECES = {
+    "BP" : "\u2659",
+    "BB" : "\u2657",
+    "BR" : "\u2656",
+    "BQ" : "\u2655",
+    "BK" : "\u2654",
+    "WP" : "\u265f",
+    "WN" : "\u265e",
+    "WB" : "\u265d",
+    "WR" : "\u265c",
+    "WQ" : "\u265b",
+    "WK" : "\u265a",
+    "BN" : "\u2658",
+    "WN" : "\u265e"
+}
 
 class Chess:
-    
     def __init__(self):
-        self.__gameboard = {}
-        self.__images = [] 
+        self.__gameboard = [[None for i in range(8)] for j in range(8)]
 
     def initializeGame(self):
-        for i in range(0,8):
-            self.__gameboard[(i,1)] = "WP"
-            self.__gameboard[(i,6)] = "BP"
         order = "RNBQKBNR"
         for i in range(0,8):
-            self.__gameboard[(i,0)] = "W"+order[i]
-            self.__gameboard[(i,7)] = "B"+order[i]
-        
-        self.__gameboard[(4,1)]=None
-        self.__gameboard[(4,3)]="WP"
-
-        self.__gameboard[(4,6)]=None
-        self.__gameboard[(4,4)]="BP"
-
-        self.__gameboard[(6,0)]=None
-        self.__gameboard[(5,2)]="WN"
+            self.__gameboard[1][i] = "WP"
+            self.__gameboard[0][i] = "W"+order[i]
+            self.__gameboard[6][i] = "BP"
+            self.__gameboard[7][i] = "B"+order[i]
+        print(self.__gameboard)
     
-    def draw(self,root):
-        canvas = Canvas(root, width=400, height=400, bg='#dddddd')
+    def draw(self):
+        print("-"*33)
         for i in range(8):
-            for j in range(4):
-                canvas.create_rectangle(50*((i+1)%2)+100*j,50*i,50+50*((i+1)%2)+100*j,50+50*i, fill="#aaaaaa",width=0)
-        for x,y in self.__gameboard:
-            if self.__gameboard[(x,y)]!=None:
-                img = PhotoImage(file=PIECES_IMG[self.__gameboard[(x,y)]])
-                self.__images.append(img)
-                canvas.create_image(50*x,350-50*y,image=img,anchor=NW)
-        canvas.pack()
+            for j in range(8):
+                print(f"| {PIECES[self.__gameboard[7-i][j]] if self.__gameboard[7-i][j]!=None else " "} ",end="")
+            print("|")
+            print("-"*33)
